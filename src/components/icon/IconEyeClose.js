@@ -26,7 +26,7 @@ const IconEyeClose = ({ className = "", onClick = () => {} }) => {
         <path
           d="M19.1217 1.11547L1.9998 18.9996"
           stroke="#999999"
-          strokeWdth="1.5"
+          strokeWidth="1.5"
           strokeLinecap="round"
           strokeLinejoin="round"
         />

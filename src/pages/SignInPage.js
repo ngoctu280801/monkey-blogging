@@ -1,24 +1,22 @@
+import { values } from "lodash";
 import React, { useState } from "react";
-import styled from "styled-components";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { NavLink, useNavigate } from "react-router-dom";
+import Button from "../components/button/Button";
+import Field from "../components/field/Field";
+import { IconEyeClose, IconEyeOpen } from "../components/icon";
 import { Input } from "../components/input";
 import { Label } from "../components/label";
-import { useForm } from "react-hook-form";
-import { IconEyeClose, IconEyeOpen } from "../components/icon";
-import Field from "../components/field/Field";
-import Button from "../components/button/Button";
+import { useAuth } from "../contexts/auth-context";
+import AuthenticationPage from "./AuthenticationPage";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useEffect } from "react";
 import { toast } from "react-toastify";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth, db } from "../firebase/firebase-config";
-import { update } from "lodash";
-import { NavLink, useNavigate } from "react-router-dom";
-import { addDoc, collection } from "firebase/firestore";
-import AuthenticationPage from "./AuthenticationPage";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase/firebase-config";
 
 const schema = yup.object({
-  fullname: yup.string().required("Please enter your fullname"),
   email: yup
     .string()
     .required("Please enter your email")
@@ -29,35 +27,21 @@ const schema = yup.object({
     .required("Please enter your password"),
 });
 
-const SignUpPage = () => {
+const SignInPage = () => {
+  const [togglePassword, setTogglePassword] = useState(false);
+  const { userInfo } = useAuth();
   const navigate = useNavigate();
   const {
     control,
     handleSubmit,
     formState: { errors, isValid, isSubmitting, watch, reset },
   } = useForm({ mode: "onChange", resolver: yupResolver(schema) });
-  const handleSignUp = async (values) => {
-    if (!isValid) return;
-    const user = await createUserWithEmailAndPassword(
-      auth,
-      values.email,
-      values.password
-    );
-    await updateProfile(auth.currentUser, { displayName: values.fullname });
-    toast.success("Register successfully");
-    const colRef = collection(db, "users");
-    await addDoc(colRef, {
-      fullname: values.fullname,
-      email: values.email,
-      password: values.password,
-    });
-    navigate("/");
-  };
-
-  const [togglePassword, setTogglePassword] = useState(false);
+  console.log("email login: ", values.email);
   useEffect(() => {
-    document.title = "Sign Up";
-  }, []);
+    document.title = "Sign In";
+    if (userInfo?.email) navigate("/");
+  }, [userInfo]);
+
   useEffect(() => {
     const arrErrors = Object.values(errors);
     if (arrErrors.length > 0)
@@ -66,19 +50,15 @@ const SignUpPage = () => {
         delay: 100,
       });
   }, [errors]);
-
+  const handleSignIn = async (values) => {
+    if (!isValid) return;
+    await signInWithEmailAndPassword(auth, values.email, values.password);
+    toast.success("Login Successfully");
+    navigate("/");
+  };
   return (
     <AuthenticationPage>
-      <form onSubmit={handleSubmit(handleSignUp)}>
-        <Field>
-          <Label htmlFor="fullname">Fullname</Label>
-          <Input
-            name="fullname"
-            type="text"
-            placeholder="Enter your fullname"
-            control={control}
-          ></Input>
-        </Field>
+      <form onSubmit={handleSubmit(handleSignIn)}>
         <Field>
           <Label htmlFor="email">Email Address</Label>
           <Input
@@ -112,7 +92,8 @@ const SignUpPage = () => {
           </Input>
         </Field>
         <div className="have-account">
-          You already have an account? <NavLink to={"/sign-in"}>Login</NavLink>
+          You havev't had an account yet?{" "}
+          <NavLink to={"/sign-up"}>Sign Up</NavLink>
         </div>
         <Button
           type="submit"
@@ -120,11 +101,11 @@ const SignUpPage = () => {
           disabled={isSubmitting}
           style={{ margin: "0 auto", maxWidth: "300px", width: "100%" }}
         >
-          Sign Up
+          Sign In
         </Button>
       </form>
     </AuthenticationPage>
   );
 };
 
-export default SignUpPage;
+export default SignInPage;

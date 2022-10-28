@@ -34,8 +34,8 @@ const InputStyles = styled.div`
     cursor: pointer;
   }
 `;
-const Input = ({ name, type = "text", children, control, ...props }) => {
-  const field = useController({ control, name, defaultValue: "" });
+const Input = ({ name = "", type = "text", children, control, ...props }) => {
+  const { field } = useController({ control, name, defaultValue: "" });
   return (
     <InputStyles hasIcon={children ? true : false}>
       <input id={name} type={type} {...field} {...props} />
