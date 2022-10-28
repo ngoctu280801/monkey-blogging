@@ -17,13 +17,15 @@ const PostTitleStyles = styled.div`
     props.type === "normal" &&
     css`
       font-size: 18px;
+      color: #232323;
     `};
 `;
 
 const PostTitle = ({ children, type = "big", className = "", to = "/" }) => {
   return (
     <PostTitleStyles type={type} className={`post-title ${className}`}>
-      <NavLink to={to}>{children}</NavLink>
+      {/* <NavLink to={to}>{children}</NavLink> */}
+      {children}
     </PostTitleStyles>
   );
 };
