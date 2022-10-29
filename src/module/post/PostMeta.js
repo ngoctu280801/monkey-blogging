@@ -15,6 +15,10 @@ const PostMetaStyles = styled.div`
     background-color: currentColor;
     border-radius: 100rem;
   }
+  @media screen and (max-width: 1023.98px) {
+    font-size: 10px;
+    gap: 6px;
+  }
 `;
 const PostMeta = ({
   className = "",
