@@ -1,21 +1,18 @@
 import React, { useState } from "react";
-import { DropdownProvider } from "./dropdown-context";
+import { DropdownProvider, useDropdown } from "./dropdown-context";
 
 const Dropdown = ({
   placeholder = "Please select an option",
   children,
   ...props
 }) => {
-  const [show, setShow] = useState(false);
-  const handleToggleDropdown = () => {
-    setShow(!show);
-  };
+  const { show, setShow, toggle } = useDropdown();
   return (
     <DropdownProvider {...props}>
       <div className="relative inline-block w-full">
         <div
           className="flex items-center justify-between p-5 bg-[#E7ECF3] rounded cursor-pointer font-medium"
-          onClick={handleToggleDropdown}
+          onClick={toggle}
         >
           <span>{placeholder}</span>
           <span>
