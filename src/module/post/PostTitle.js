@@ -24,8 +24,8 @@ const PostTitleStyles = styled.div`
 const PostTitle = ({ children, type = "big", className = "", to = "/" }) => {
   return (
     <PostTitleStyles type={type} className={`post-title ${className}`}>
-      {/* <NavLink to={to}>{children}</NavLink> */}
-      {children}
+      <NavLink to={to}>{children}</NavLink>
+      {/* {children} */}
     </PostTitleStyles>
   );
 };
