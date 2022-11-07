@@ -15,3 +15,12 @@ export const postStatus = {
   PENDING: 2,
   REJECTED: 3,
 };
+export const categoryStatus = {
+  APPROVED: 1,
+  UNAPPROVED: 2,
+};
+export const userRole = {
+  ADMIN: 1,
+  MOD: 2,
+  USER: 3,
+};

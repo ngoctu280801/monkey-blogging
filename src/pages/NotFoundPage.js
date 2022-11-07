@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const NotFoundStyles = styled.div`
@@ -30,15 +30,16 @@ const NotFoundStyles = styled.div`
   }
 `;
 const NotFoundPage = () => {
+  const navigate = useNavigate();
   return (
     <NotFoundStyles>
       <NavLink to="/" className={"logo"}>
         <img srcSet="/logo.png 2x" alt="mokey-blogging" />
       </NavLink>
       <h1 className="heading">Oops! Page Not Found</h1>
-      <NavLink to="/" className={"back"}>
-        Back to Home
-      </NavLink>
+      <button onClick={() => navigate(-1)} className="back">
+        Go back
+      </button>
     </NotFoundStyles>
   );
 };

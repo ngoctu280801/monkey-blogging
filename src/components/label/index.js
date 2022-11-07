@@ -1,2 +1,3 @@
 import Label from "./Label";
-export { Label };
+import LabelStatus from "./LabelStatus";
+export { Label, LabelStatus };

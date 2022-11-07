@@ -24,6 +24,8 @@ import Toggle from "../../components/toggle/Toggle";
 import { db } from "../../firebase/firebase-config";
 import { useAuth } from "../../contexts/auth-context";
 import { toast } from "react-toastify";
+import DashboardHeading from "../dashboard/DashboardHeading";
+import FieldCheckboxes from "../../components/field/FieldCheckboxes";
 
 const PostAddNewStyles = styled.div``;
 const PostAddNew = () => {
@@ -116,7 +118,7 @@ const PostAddNew = () => {
 
   return (
     <PostAddNewStyles>
-      <h1 className="dashboard-heading">Add new post</h1>
+      <DashboardHeading title="Add post" desc="Add new post"></DashboardHeading>
       <form onSubmit={handleSubmit(addPostHandler)}>
         <div className="grid grid-cols-2 gap-x-10 mb-10">
           <Field>
@@ -187,7 +189,7 @@ const PostAddNew = () => {
           </Field>
           <Field>
             <Label>Status</Label>
-            <div className="flex items-center gap-x-5">
+            <FieldCheckboxes>
               <Radio
                 name="status"
                 control={control}
@@ -215,7 +217,7 @@ const PostAddNew = () => {
               >
                 Reject
               </Radio>
-            </div>
+            </FieldCheckboxes>
           </Field>
         </div>
         <Button
