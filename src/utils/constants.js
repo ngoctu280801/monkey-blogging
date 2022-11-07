@@ -24,3 +24,4 @@ export const userRole = {
   MOD: 2,
   USER: 3,
 };
+export const ITEMS_PER_PAGE = 1;
