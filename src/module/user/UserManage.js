@@ -72,6 +72,7 @@ const UserManage = () => {
     };
     fetchData();
   }, [filter]);
+  console.log(users);
 
   const renderLabelStatus = (status) => {
     switch (status) {
