@@ -119,10 +119,13 @@ const Header = () => {
             </Button>
           ) : (
             <div className="header-auth">
-              <span>Welcome back, </span>
+              <Button to="/dashboard" height="56px">
+                Dashboard
+              </Button>
+              {/* <span>Welcome back, </span>
               <strong className="text-primary">
                 {getLastName(userInfo?.displayName)}
-              </strong>
+              </strong> */}
             </div>
           )}
         </div>

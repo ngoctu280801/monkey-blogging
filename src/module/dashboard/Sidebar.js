@@ -143,10 +143,10 @@ const sidebarLinks = [
 const Sidebar = () => {
   return (
     <SidebarStyles className="sidebar">
-      <div className="sidebar-logo">
+      <NavLink to="/" className="sidebar-logo cursor-pointer">
         <img srcSet="/logo.png 2x" alt="" />
         <span>Monkey Blogging</span>
-      </div>
+      </NavLink>
       {sidebarLinks.map((link) => {
         return (
           <NavLink

@@ -61,30 +61,31 @@ const PostFeatureItemStyles = styled.div`
   }
 `;
 const PostFeatureItem = ({ data }) => {
-  const [category, setCategory] = useState();
-  const [user, setUser] = useState();
+  // const [category, setCategory] = useState();
+  // const [user, setUser] = useState();
 
-  useEffect(() => {
-    async function fetchData() {
-      if (data.userId) {
-        const docRef = doc(db, "categories", data.categoryId);
-        const docSnap = await getDoc(docRef);
-        setCategory(docSnap.data());
-      }
-    }
-    fetchData();
-  }, [data.categoryId]);
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     if (data.userId) {
+  //       const docRef = doc(db, "categories", data.categoryId);
+  //       const docSnap = await getDoc(docRef);
+  //       setCategory(docSnap.data());
+  //     }
+  //   }
+  //   fetchData();
+  // }, [data.categoryId]);
 
-  useEffect(() => {
-    async function fetchData() {
-      const docRef = doc(db, "users", data.userId);
-      const docSnap = await getDoc(docRef);
-      console.log(docSnap.data());
-      setUser(docSnap.data());
-    }
-    fetchData();
-  }, [data.userId]);
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     const docRef = doc(db, "users", data.userId);
+  //     const docSnap = await getDoc(docRef);
+  //     console.log(docSnap.data());
+  //     setUser(docSnap.data());
+  //   }
+  //   fetchData();
+  // }, [data.userId]);
   if (!data || !data.id) return null;
+  const { category, user } = data;
 
   const date = data?.createAt?.seconds
     ? new Date(data?.createAt?.seconds * 1000)

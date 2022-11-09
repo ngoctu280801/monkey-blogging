@@ -12,6 +12,8 @@ import { postStatus } from "../../utils/constants";
 import {
   addDoc,
   collection,
+  doc,
+  getDoc,
   getDocs,
   query,
   serverTimestamp,
@@ -26,6 +28,7 @@ import { useAuth } from "../../contexts/auth-context";
 import { toast } from "react-toastify";
 import DashboardHeading from "../dashboard/DashboardHeading";
 import FieldCheckboxes from "../../components/field/FieldCheckboxes";
+import { async } from "@firebase/util";
 
 const PostAddNewStyles = styled.div``;
 const PostAddNew = () => {
@@ -54,15 +57,32 @@ const PostAddNew = () => {
     document.title = "Mokey Blogging - Add new post";
   }, []);
 
+  useEffect(() => {
+    async function fetchData() {
+      if (!userInfo.email) return;
+      const q = query(
+        collection(db, "users"),
+        where("email", "==", userInfo.email)
+      );
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        setValue("user", { id: doc.id, ...doc.data() });
+      });
+    }
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userInfo.email]);
+
   const { control, watch, setValue, handleSubmit, getValues, reset } = useForm({
     mode: "onChange",
     defaultValues: {
       status: 2,
-      categoryId: "",
+      category: {},
       title: "",
       slug: "",
       hot: false,
       image: "",
+      user: {},
     },
   });
 
@@ -85,22 +105,22 @@ const PostAddNew = () => {
       const cloneValue = { ...values };
       cloneValue.slug = slugify(values.slug || values.title, { lower: true });
       cloneValue.status = Number(cloneValue.status);
-      console.log("userInfo.id", userInfo.uid);
       const colRef = collection(db, "posts");
       await addDoc(colRef, {
         ...cloneValue,
         image,
-        userId: userInfo.uid,
+        // userId: userInfo.uid,
         createAt: serverTimestamp(),
       });
       toast.success("Create new post successfully");
       reset({
         status: 2,
-        categoryId: "",
+        category: {},
         title: "",
         slug: "",
         hot: false,
         image: "",
+        user: cloneValue.user,
       });
       handleResetUpload();
       setSelectCategory("");
@@ -110,8 +130,10 @@ const PostAddNew = () => {
     setLoading(false);
   };
 
-  const handleSelectOption = (item) => {
-    setValue("categoryId", item.id);
+  const handleSelectOption = async (item) => {
+    const colRef = doc(db, "categories", item.id);
+    const docData = await getDoc(colRef);
+    setValue("category", { id: docData.id, ...docData.data() });
     // setSelectCategory(item);
     setSelectCategory(item.name);
   };
