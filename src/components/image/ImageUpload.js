@@ -1,4 +1,5 @@
 import React, { Fragment } from "react";
+import PropTypes from "prop-types";
 
 const ImageUpload = (props) => {
   const {
@@ -38,7 +39,10 @@ const ImageUpload = (props) => {
           <img src={image} className="w-full h-full object-cover" alt="" />
           <button
             className="w-16 h-16 bg-white rounded-full flex items-center justify-center cursor-pointer absolute z-10 text-red-500 opacity-0 invisible transition-all group-hover:opacity-100 group-hover:visible"
-            onClick={handleDeleteImage}
+            onClick={(e) => {
+              e.preventDefault();
+              handleDeleteImage();
+            }}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -67,6 +71,13 @@ const ImageUpload = (props) => {
       )}
     </label>
   );
+};
+ImageUpload.propTypes = {
+  name: PropTypes.string,
+  className: PropTypes.string,
+  progress: PropTypes.number,
+  image: PropTypes.string,
+  handleDeleteImage: PropTypes.func,
 };
 
 export default ImageUpload;

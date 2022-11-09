@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React from "react";
 import { Input } from "../components/input";
 import { Label } from "../components/label";
 import { useForm } from "react-hook-form";
@@ -11,12 +10,12 @@ import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth, db } from "../firebase/firebase-config";
-import { update } from "lodash";
 import { NavLink, useNavigate } from "react-router-dom";
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { collection, doc, serverTimestamp, setDoc } from "firebase/firestore";
 import AuthenticationPage from "./AuthenticationPage";
 import InputPasswordToggle from "../components/input/InputPasswordToggle";
 import slugify from "slugify";
+import { userRole, userStatus } from "../utils/constants";
 
 const schema = yup.object({
   fullname: yup.string().required("Please enter your fullname"),
@@ -44,21 +43,21 @@ const SignUpPage = () => {
       values.email,
       values.password
     );
-    await updateProfile(auth.currentUser, { displayName: values.fullname });
-    toast.success("Register successfully");
-    const colRef = collection(db, "users");
+    await updateProfile(auth.currentUser, {
+      displayName: values.fullname,
+      photoURL: "/user.png",
+    });
     await setDoc(doc(db, "users", auth.currentUser.uid), {
       fullname: values.fullname,
       email: values.email,
       password: values.password,
       username: slugify(values.fullname, { lower: true }),
+      avatar: "/user.png",
+      status: userStatus.ACTIVE,
+      role: userRole.USER,
+      createAt: serverTimestamp(),
     });
-
-    // await addDoc(colRef, {
-    //   fullname: values.fullname,
-    //   email: values.email,
-    //   password: values.password,
-    // });
+    toast.success("Register successfully");
     navigate("/");
   };
 
