@@ -1,36 +1,77 @@
 import DashboardHeading from "../dashboard/DashboardHeading";
 import React, { useEffect, useState } from "react";
-import { collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  limit,
+  onSnapshot,
+  query,
+  startAfter,
+  where,
+} from "firebase/firestore";
 import { db } from "../../firebase/firebase-config";
 import Table from "../../components/table/Table";
 import { ActionDelete, ActionEdit, ActionView } from "../../components/action";
 import { useNavigate } from "react-router-dom";
-import { userRole, userStatus } from "../../utils/constants";
+import { ITEMS_PER_PAGE, userRole, userStatus } from "../../utils/constants";
 import { LabelStatus } from "../../components/label";
 import Swal from "sweetalert2";
 import { deleteUser, getAuth } from "firebase/auth";
 import { toast } from "react-toastify";
 import Button from "../../components/button/Button";
+import { debounce } from "lodash";
 
 const UserManage = () => {
   const [users, setUsers] = useState([]);
+  const [filter, setFilter] = useState("");
+  const [lastDocs, setLastDocs] = useState();
+  const [total, setTotal] = useState(0);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       const colRef = collection(db, "users");
-      onSnapshot(colRef, (snapshot) => {
+      const newRef = filter
+        ? query(
+            colRef,
+            where("username", ">=", filter),
+            where("username", "<=", filter + "utf8"),
+            limit(ITEMS_PER_PAGE)
+          )
+        : query(colRef, limit(ITEMS_PER_PAGE));
+      const documentSnapshots = await getDocs(newRef);
+
+      const lastVisible =
+        documentSnapshots.docs[documentSnapshots.docs.length - 1];
+
+      //GET FULL SIZE
+      const colRefSize = filter
+        ? query(
+            colRef,
+            where("username", ">=", filter),
+            where("username", "<=", filter + "utf8")
+          )
+        : query(colRef);
+      onSnapshot(colRefSize, (snapshot) => {
+        console.log("size", snapshot.size);
+        setTotal(snapshot.size);
+      });
+
+      onSnapshot(newRef, (snapshot) => {
         let results = [];
         snapshot.forEach((doc) => {
           results.push({ id: doc.id, ...doc.data() });
         });
+
         setUsers(results);
-        console.log("users: ", results);
       });
+      setLastDocs(lastVisible);
     };
     fetchData();
-  }, []);
+  }, [filter]);
 
   const renderLabelStatus = (status) => {
     switch (status) {
@@ -120,13 +161,50 @@ const UserManage = () => {
     });
   };
 
+  const handleLoadmoreUser = async () => {
+    const nextRef = filter
+      ? query(
+          collection(db, "users"),
+          where("username", ">=", filter),
+          where("username", "<=", filter + "utf8"),
+
+          limit(ITEMS_PER_PAGE),
+          startAfter(lastDocs || 0)
+        )
+      : query(
+          collection(db, "users"),
+          startAfter(lastDocs || 0),
+          limit(ITEMS_PER_PAGE)
+        );
+    onSnapshot(nextRef, (snapshot) => {
+      let results = [];
+      snapshot.forEach((doc) => {
+        results.push({ id: doc.id, ...doc.data() });
+      });
+      console.log("Resullt", results);
+      setUsers([...users, ...results]);
+    });
+
+    const documentSnapshots = await getDocs(nextRef);
+
+    const lastVisible =
+      documentSnapshots.docs[documentSnapshots.docs.length - 1];
+    setLastDocs(lastVisible);
+  };
+
+  const handleSetFilter = debounce((e) => setFilter(e.target.value), 500);
   return (
     <div>
       <DashboardHeading
         title="Users"
         desc="Manage your user"
       ></DashboardHeading>
-      <div className="flex justify-end mb-10">
+      <div className="flex justify-between mb-10">
+        <input
+          placeholder="Search by username..."
+          className="py-4 px-5 mb-5 border border-gray-300 outline-none rounded-lg"
+          onChange={handleSetFilter}
+        ></input>
         <Button kind="ghost" to="/manage/add-user">
           Add new user
         </Button>
@@ -145,6 +223,11 @@ const UserManage = () => {
           {users.length > 0 && users.map((user) => renderUserItem(user))}
         </tbody>
       </Table>
+      {users.length < total && (
+        <Button onClick={handleLoadmoreUser} className="mx-auto mt-5">
+          Load more
+        </Button>
+      )}
     </div>
   );
 };

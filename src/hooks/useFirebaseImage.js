@@ -6,6 +6,7 @@ import {
   deleteObject,
 } from "firebase/storage";
 import { useState } from "react";
+import { toast } from "react-toastify";
 export default function useFirebaseImage(setValue, getValues) {
   const [progress, setProgress] = useState(0);
   const [image, setImage] = useState("");
@@ -87,6 +88,7 @@ export default function useFirebaseImage(setValue, getValues) {
       })
       .catch((error) => {
         // Uh-oh, an error occurred!
+        toast.error("Cant not delete image");
         console.log("Cant not delete image");
       });
   };

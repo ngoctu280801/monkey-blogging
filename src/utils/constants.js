@@ -30,4 +30,4 @@ export const userStatus = {
   BAN: 3,
 };
 
-export const ITEMS_PER_PAGE = 1;
+export const ITEMS_PER_PAGE = 5;

@@ -36,7 +36,7 @@ const UserUpdate = () => {
   const userId = params.get("id");
   const navigate = useNavigate();
   let image_name = "";
-  if (image) {
+  if (image && image.includes("2F")) {
     image_name = /%2F(\S+)\?/gm.exec(image)[1];
     console.log("image_name", image_name);
   }
