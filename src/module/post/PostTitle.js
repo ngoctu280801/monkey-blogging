@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import styled, { css } from "styled-components";
 
 const PostTitleStyles = styled.div`
@@ -24,7 +24,7 @@ const PostTitleStyles = styled.div`
 const PostTitle = ({ children, type = "big", className = "", to = "/" }) => {
   return (
     <PostTitleStyles type={type} className={`post-title ${className}`}>
-      <NavLink to={to}>{children}</NavLink>
+      <Link to={to}>{children}</Link>
       {/* {children} */}
     </PostTitleStyles>
   );

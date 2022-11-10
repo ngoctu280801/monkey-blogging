@@ -6,10 +6,12 @@ import CategoryUpdate from "./module/category/CategoryUpdate";
 import DashboardLayout from "./module/dashboard/DashboardLayout";
 import PostAddNew from "./module/post/PostAddNew";
 import PostManage from "./module/post/PostManage";
+import PostUpdate from "./module/post/PostUpdate";
 import UserAddNew from "./module/user/UserAddNew";
 import UserManage from "./module/user/UserManage";
 import UserProfile from "./module/user/UserProfile";
 import UserUpdate from "./module/user/UserUpdate";
+import CategoryPage from "./pages/CategoryPage";
 import DashboardPage from "./pages/DashboardPage";
 import HomePage from "./pages/HomePage";
 import NotFoundPage from "./pages/NotFoundPage";
@@ -28,6 +30,10 @@ function App() {
 
           <Route path="*" element={<NotFoundPage></NotFoundPage>}></Route>
           <Route
+            path="/category/:slug"
+            element={<CategoryPage></CategoryPage>}
+          ></Route>
+          <Route
             path="/:slug"
             element={<PostDetailsPage></PostDetailsPage>}
           ></Route>
@@ -43,6 +49,10 @@ function App() {
             <Route
               path="/manage/add-post"
               element={<PostAddNew></PostAddNew>}
+            ></Route>
+            <Route
+              path="/manage/update-post"
+              element={<PostUpdate></PostUpdate>}
             ></Route>
             <Route
               path="/manage/category"

@@ -12,6 +12,7 @@ import FieldCheckboxes from "../../components/field/FieldCheckboxes";
 import ImageUpload from "../../components/image/ImageUpload";
 import { Input } from "../../components/input";
 import { Label } from "../../components/label";
+import Textarea from "../../components/textarea/Textarea";
 import { db } from "../../firebase/firebase-config";
 import useFirebaseImage from "../../hooks/useFirebaseImage";
 import { userRole, userStatus } from "../../utils/constants";
@@ -199,6 +200,17 @@ const UserUpdate = () => {
             </FieldCheckboxes>
           </Field>
         </div>
+        <div className="form-layout">
+          <Field>
+            <Label>Description</Label>
+            <Textarea
+              name="description"
+              placeholder="Enter user description"
+              control={control}
+            ></Textarea>
+          </Field>
+        </div>
+
         <Button
           kind="primary"
           type="submit"

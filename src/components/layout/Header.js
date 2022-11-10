@@ -15,6 +15,7 @@ const HeaderStyles = styled.header`
   .header-main {
     display: flex;
     align-items: center;
+    justify-content: space-between;
   }
   .header-main .menu {
     display: flex;
@@ -34,28 +35,7 @@ const HeaderStyles = styled.header`
   .header-right {
     margin-left: auto;
   }
-  .search {
-    margin-left: auto;
-    padding: 15px 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    width: 100%;
-    max-width: 320px;
-    display: flex;
-    align-items: center;
-    position: relative;
-    margin-right: 20px;
-  }
-  .search-input {
-    flex: 1;
-    padding-right: 30px;
-  }
-  .search-icon {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 20px;
-  }
+
   .header-button {
     margin-left: 20px;
   }
@@ -72,17 +52,23 @@ const Header = () => {
     <HeaderStyles>
       <div className="container">
         <div className="header-main">
-          <NavLink to={"/"}>
-            <img srcSet="/logo.png 2x" alt="mokey-blogging" className="logo" />
-          </NavLink>
-          <ul className="menu">
-            {menuLinks.map((item, index) => (
-              <li key={index}>
-                <NavLink to={item.url}>{item.title}</NavLink>
-              </li>
-            ))}
-          </ul>
-          <div className="search">
+          <div class="flex items-center">
+            <NavLink to={"/"}>
+              <img
+                srcSet="/logo.png 2x"
+                alt="mokey-blogging"
+                className="logo"
+              />
+            </NavLink>
+            <ul className="menu">
+              {menuLinks.map((item, index) => (
+                <li key={index}>
+                  <NavLink to={item.url}>{item.title}</NavLink>
+                </li>
+              ))}
+            </ul>
+          </div>
+          {/* <div className="search">
             <input
               type="text"
               className="search-input"
@@ -106,7 +92,7 @@ const Header = () => {
                 />
               </svg>
             </span>
-          </div>
+          </div> */}
 
           {!userInfo ? (
             <Button

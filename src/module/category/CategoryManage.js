@@ -137,7 +137,9 @@ const CategoryManage = () => {
                 </td>
                 <td>
                   <div className="flex items-center  gap-x-3">
-                    <ActionView></ActionView>
+                    <ActionView
+                      onClick={() => navigate(`/category/${category.slug}`)}
+                    ></ActionView>
                     <ActionEdit
                       onClick={() =>
                         navigate(`/manage/update-category?id=${category.id}`)

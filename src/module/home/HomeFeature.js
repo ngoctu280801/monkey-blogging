@@ -7,6 +7,7 @@ import {
   collection,
   limit,
   onSnapshot,
+  orderBy,
   query,
   where,
 } from "firebase/firestore";
@@ -23,12 +24,14 @@ const HomeFeature = () => {
       where("hot", "==", true),
       limit(3)
     );
-    console.log(queries.length);
+    console.log("queries", queries);
+
     onSnapshot(queries, (snapshot) => {
       const result = [];
       snapshot.forEach((doc) => {
         result.push({ id: doc.id, ...doc.data() });
       });
+      console.log(result);
       setPosts(result);
     });
   }, []);

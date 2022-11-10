@@ -34,6 +34,7 @@ const HomeNewest = () => {
           </div>
         </div>
         <div className="grid-layout grid-layout--primary">
+          <div>co nhe Tu</div>
           <PostItem></PostItem>
           <PostItem></PostItem>
           <PostItem></PostItem>

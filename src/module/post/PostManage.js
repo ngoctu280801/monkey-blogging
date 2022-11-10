@@ -151,8 +151,10 @@ const PostManage = () => {
         </td>
         <td>
           <div className="flex items-center gap-x-3 text-gray-500">
-            <ActionView></ActionView>
-            <ActionEdit></ActionEdit>
+            <ActionView onClick={() => navigate(`/${post.slug}`)}> </ActionView>
+            <ActionEdit
+              onClick={() => navigate(`/manage/update-post?id=${post.id}`)}
+            ></ActionEdit>
             <ActionDelete
               onClick={() => handleDeletePost(post.id)}
             ></ActionDelete>
