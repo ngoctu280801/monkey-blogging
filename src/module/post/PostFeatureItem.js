@@ -82,6 +82,7 @@ const PostFeatureItem = ({ data }) => {
             className="post-meta"
             author={user?.fullname}
             date={formatDate}
+            isFeature={true}
           ></PostMeta>
         </div>
         <PostTitle to={data.slug} className="post-title">

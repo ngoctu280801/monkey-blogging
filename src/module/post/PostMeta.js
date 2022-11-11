@@ -26,9 +26,10 @@ const PostMeta = ({
   date = "Mar 23",
   author = "Andiez Le",
   to = "",
+  isFeature = false,
 }) => {
   return (
-    <div class="flex-1 flex items-end">
+    <div class={`${isFeature ? "" : "flex-1"} flex items-end`}>
       <PostMetaStyles className={className}>
         <span className="time">{date}</span>
         <span className="dot"></span>
