@@ -44,7 +44,7 @@ const PostItem = ({ data }) => {
         {data.title}
       </PostTitle>
       <PostMeta
-        to={`/author/${data.user?.username}`}
+        to={`/profile/${data.user?.username}`}
         date={formatDate}
         author={data.user?.fullname}
       ></PostMeta>

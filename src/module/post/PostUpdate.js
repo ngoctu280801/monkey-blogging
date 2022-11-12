@@ -28,6 +28,7 @@ import ReactQuill, { Quill } from "react-quill";
 import ImageUploader from "quill-image-uploader";
 import { imgbbAPI } from "../../apiConfig";
 import axios from "axios";
+import slugify from "slugify";
 Quill.register("modules/imageUploader", ImageUploader);
 
 const PostUpdate = () => {
@@ -88,8 +89,9 @@ const PostUpdate = () => {
   const watchStatus = watch("status");
   const watchHot = watch("hot");
   const handleUpdatePost = async (values) => {
-    console.log(values);
     if (!isValid) return;
+    values.status = Number(values.status);
+    values.slug = slugify(values.slug || values.title, { lower: true });
     const colRef = doc(db, "posts", postId);
     await updateDoc(colRef, { ...values, image, content });
     toast.success("Post updated");

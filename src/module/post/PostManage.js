@@ -28,7 +28,6 @@ const PostManage = () => {
   const [filter, setFilter] = useState("");
   const [total, setTotal] = useState(0);
   const [lastDocs, setLastDocs] = useState();
-  console.log(postList);
 
   const navigate = useNavigate();
 
@@ -95,7 +94,6 @@ const PostManage = () => {
       snapshot.forEach((doc) => {
         results.push({ id: doc.id, ...doc.data() });
       });
-      console.log("Resullt", results);
       setPostList([...postList, ...results]);
     });
 

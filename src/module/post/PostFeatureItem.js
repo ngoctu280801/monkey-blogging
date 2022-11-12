@@ -70,15 +70,17 @@ const PostFeatureItem = ({ data }) => {
   const formatDate = new Date(date).toLocaleDateString("vi-VI");
   return (
     <PostFeatureItemStyles>
-      <PostImage url={data.image} alt="unsplash"></PostImage>
+      <PostImage url={data?.image} alt="unsplash"></PostImage>
       <div className="post-overlay"></div>
       <div className="post-content">
         <div className="post-top">
           {category?.name && (
-            <PostCategory to={category?.slug}>{category.name}</PostCategory>
+            <PostCategory to={`/category/${data.category?.slug}`}>
+              {category.name}
+            </PostCategory>
           )}
           <PostMeta
-            to={slugify(user?.fullname || "", { lower: true })}
+            to={`/profile/${user?.username}`}
             className="post-meta"
             author={user?.fullname}
             date={formatDate}
